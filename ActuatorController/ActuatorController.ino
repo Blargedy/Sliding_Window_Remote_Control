@@ -43,3 +43,7 @@ byte delayWhileCheckingPushButtons(unsigned int delayTime)
   }
   return(0);
 }
+
+void home(){
+  
+}
