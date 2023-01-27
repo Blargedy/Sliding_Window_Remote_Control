@@ -3,18 +3,18 @@ WIP
 
 ### BoM
 * linear actuator x1
-* H-bridge motor driver x1
-* 12v power supply
-* limit switch x1
-* SPST-mom button x1
-* Panic cutoff button x1
-* SPDT-mom switch x1
-* SPDT-latching switch x1
-* barrel jack connector
-* power button
-* 12v 3030 fan x1
-* panic button x1
-* Arduino wemos D1 Mini x1
+* L298N H-bridge motor driver x1 [Amazon](https://www.amazon.ca/gp/product/B07D1HP3SJ/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+* 12v power supply with 5.5mm barrel jack x1 [Amazon](https://www.amazon.ca/gp/product/B085ZZ86ZJ/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+* limit switch x1 [Amazon](https://www.amazon.ca/gp/product/B07YKH3TDR/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+* SPST-mom button x1 [Amazon](https://www.amazon.ca/gp/product/B07Q6C3NSN/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+* Panic cutoff button x1 [Amazon](https://www.amazon.ca/gp/product/B07WTL3KPB/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+* SPDT-mom switch x1 [Amazon](https://www.amazon.ca/gp/product/B01LYGWWHA/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+* SPDT-latching switch x1 [Amazon](https://www.amazon.ca/gp/product/B01BTTOEQ6/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+* 5.5mm x 2.1mm barrel jack connector [Amazon](https://www.amazon.ca/gp/product/B092Z6ZG3V/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+* power button x1 [Amazon](https://www.amazon.ca/gp/product/B08225LGRT/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+* 12v A4x20 fan x1 [Amazon](https://www.amazon.ca/gp/product/B071W93333/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+* panic button x1 [Amazon](https://www.amazon.ca/gp/product/B07WTL3KPB/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+* Arduino Wemos D1 Mini x1 [Amazon](https://www.amazon.ca/gp/product/B07WWFND3B/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
 * 2 port wago x1
 * 3 port wago x1
 * 5 port wago x2
