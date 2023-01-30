@@ -32,7 +32,7 @@ Clearances were designed for ABS/ASA shrinkages, but the parts can be made of ba
 1. solder and crimp electric box
 2. Crimp linear actuator
 
-![image](https://user-images.githubusercontent.com/25805271/215403036-5df6a510-b308-4ae0-85b3-119126ddbc3b.png)
+![20230130_030009](https://user-images.githubusercontent.com/25805271/215446989-5598ee22-ec45-40d6-be63-3765f77d34f4.jpg)
 
 
 ## Software Configuration
