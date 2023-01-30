@@ -32,6 +32,9 @@ Clearances were designed for ABS/ASA shrinkages, but the parts can be made of ba
 1. solder and crimp electric box
 2. Crimp linear actuator
 
+![image](https://user-images.githubusercontent.com/25805271/215403036-5df6a510-b308-4ae0-85b3-119126ddbc3b.png)
+
+
 ## Software Configuration
 1. Edit wifi_passwords.h to fill in your wifi name and password, then move the wifi_passwords folder into your arduino library folder.
 2. Upload Actuator_Control_Module.ino to the D1 Mini via USB
