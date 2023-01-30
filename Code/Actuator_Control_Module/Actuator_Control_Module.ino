@@ -11,16 +11,16 @@ const char* password = STAPSK;
 // using D3 or D4 caused me problems
 const int mom_close_pin = D1;
 const int mom_open_pin = D2;
-const int endstop_pin_num = D6;
-const int motor_close_pin = D0;
-const int motor_open_pin = D5;
+const int endstop_pin = D6;
+const int motor_close_pin = D5;
+const int motor_open_pin = D0;
 
 void setup() {
   //pin modes
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(mom_close_pin, INPUT_PULLUP);
   pinMode(mom_open_pin, INPUT_PULLUP);
-  pinMode(endstop_pin_num, INPUT_PULLUP);
+  pinMode(endstop_pin, INPUT_PULLUP);
   pinMode(motor_close_pin, OUTPUT);
   pinMode(motor_open_pin, OUTPUT);
 
@@ -82,18 +82,6 @@ void setup() {
 void loop() {  
   ArduinoOTA.handle();
 
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(1000);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(1000);
-
-  // Serial.print(digitalRead(mom_close_pin));
-  // Serial.print(" ");
-  // Serial.print(digitalRead(mom_open_pin));
-  // Serial.print(" ");
-  // Serial.print(digitalRead(endstop_pin_num));
-  // Serial.print('\n');
-
   if(!digitalRead(mom_close_pin)){  //toggle switch triggered
     Serial.print("closing\n");
     digitalWrite(motor_close_pin, HIGH);
@@ -115,8 +103,28 @@ void loop() {
     Serial.print("stopping\n");
     digitalWrite(motor_open_pin, LOW);
   }
+  query_endstop();
+  delay(500);
 }
 
-void home(){
-  return;
+// I kept getting the polarity of the endstop check wrong
+// Endstop switch is normally closed and connected to ground
+// when endstop gets triggered the pin is pulled high by internal resistor
+bool query_endstop(){
+  return(digitalRead(endstop_pin));
+}
+
+bool home(){
+  if(query_endstop()){
+    Serial.print("already homed\n");
+    return 0;
+  }  
+  Serial.print("homing\n");
+  digitalWrite(motor_close_pin, HIGH);
+  while(query_endstop()){
+    delay(50);
+  }
+  digitalWrite(motor_close_pin,LOW);
+  Serial.print("homed\n");
+  return 0;
 }
