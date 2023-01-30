@@ -1,6 +1,9 @@
 # Sliding Window Remote Control
 WIP
 
+![20230130_030828](https://user-images.githubusercontent.com/25805271/215448381-5c63a3d0-f2b8-4b14-948e-479a7cd36ecd.jpg)
+
+
 ### BoM
 * linear actuator x1
 * L298N H-bridge motor driver x1 [Amazon](https://www.amazon.ca/gp/product/B07D1HP3SJ/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
