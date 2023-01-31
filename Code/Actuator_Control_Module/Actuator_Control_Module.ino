@@ -15,9 +15,17 @@ const int endstop_pin = D6;
 const int motor_close_pin = D5;
 const int motor_open_pin = D0;
 
+// Variables
+const float piston_speed = 0.01;          //in m/s (coincidentally also mm/ms)
+const float time_to_energize_coils = 1;   //in ms
+bool position_known = false;              //true if position is known
+float current_position = -1;              //in mm
+const int minimum_allowable_position = 0;
+const int maximum_allowable_position = 350;
+
 void setup() {
   //pin modes
-  pinMode(LED_BUILTIN, OUTPUT);
+  //pinMode(LED_BUILTIN, OUTPUT);
   pinMode(mom_close_pin, INPUT_PULLUP);
   pinMode(mom_open_pin, INPUT_PULLUP);
   pinMode(endstop_pin, INPUT_PULLUP);
@@ -27,10 +35,6 @@ void setup() {
   //start by stopping all motor movement
   digitalWrite(motor_close_pin, LOW);
   digitalWrite(motor_open_pin, LOW);
-
-  //initialize home boolean 
-  bool homed = false;
-
 
   Serial.begin(115200);
   Serial.println("Booting");
@@ -77,33 +81,31 @@ void setup() {
   Serial.println("Ready");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+  
+  home();
 }
 
 void loop() {  
+  //to do:
+  //measure piston speed precisely
+  //measure charge time
+  //check if endstop opened without piston being moved
+  //panic if endstop pin still triggered after opening
+  //panic if endstop doesn't trigger after full movement
+  //sanity check movement commands to not go out of range of motion
+  //wirelessly send debug messages
+  //program alarm bell  
+  //control via home assistant
   ArduinoOTA.handle();
 
-  if(!digitalRead(mom_close_pin)){  //toggle switch triggered
-    Serial.print("closing\n");
-    digitalWrite(motor_close_pin, HIGH);
-    delay(100);         //wait for debounce
-    while(!digitalRead(mom_close_pin)){      
-      delay(100);
-    }    
-    Serial.print("stopping\n");
-    digitalWrite(motor_close_pin, LOW);
+  if(position_known){
+    Serial.print("position is known and is: ");
+    Serial.println(current_position);
   }
-
-  if(!digitalRead(mom_open_pin)){  //toggle switch triggered
-    Serial.print("opening\n");
-    digitalWrite(motor_open_pin, HIGH);
-    delay(100);       //wait for debounce
-    while(!digitalRead(mom_open_pin)){      
-      delay(100);
-    }    
-    Serial.print("stopping\n");
-    digitalWrite(motor_open_pin, LOW);
+  else{
+    Serial.println("position is not known");
   }
-  query_endstop();
+  check_manual_switches();
   delay(500);
 }
 
@@ -114,17 +116,82 @@ bool query_endstop(){
   return(digitalRead(endstop_pin));
 }
 
-bool home(){
+void home(){
   if(query_endstop()){
-    Serial.print("already homed\n");
-    return 0;
-  }  
-  Serial.print("homing\n");
-  digitalWrite(motor_close_pin, HIGH);
-  while(query_endstop()){
-    delay(50);
+    Serial.println("already homed");
+    position_known = true;
+    current_position = 0;
+    return;
   }
-  digitalWrite(motor_close_pin,LOW);
-  Serial.print("homed\n");
-  return 0;
+  else{
+    Serial.println("homing");
+    digitalWrite(motor_close_pin, HIGH);
+    while(!query_endstop()){
+      delay(5);
+    }
+    digitalWrite(motor_close_pin,LOW);
+    position_known = true;
+    current_position = 0;
+    Serial.println("homed");
+    return;
+  } 
+}
+
+void check_manual_switches(){
+  //check open switch
+  if(!digitalRead(mom_open_pin)){  //toggle switch triggered
+    Serial.println("opening");
+    digitalWrite(motor_open_pin, HIGH);
+    delay(time_to_energize_coils + 50);       //wait for debounce
+    current_position += 50*piston_speed;
+    while(!digitalRead(mom_open_pin)){      
+      delay(100);
+      current_position += 100*piston_speed;
+    }
+    digitalWrite(motor_open_pin, LOW);    
+    Serial.println("stopped");
+  }
+  //check close switch
+  if(!digitalRead(mom_close_pin)){  //toggle switch triggered
+    Serial.println("closing");
+    digitalWrite(motor_close_pin, HIGH);
+    delay(time_to_energize_coils + 50);       //wait for debounce
+    current_position -= 50*piston_speed;
+    while(!digitalRead(mom_close_pin)){      
+      delay(100);
+      current_position -= 100*piston_speed;
+    }
+    digitalWrite(motor_close_pin, LOW);    
+    Serial.println("stopped");
+  }
+  return;
+}
+
+void go_to_x(int desired_position){
+  if(desired_position < minimum_allowable_position || desired_position > maximum_allowable_position){
+    Serial.println("DESIRED POSITION OUT OF BOUNDS");
+  }
+  int rounded_current_position = (int)roundf(current_position);
+  if(rounded_current_position == desired_position){
+    Serial.println("close enough.jpg");
+    return;
+  }
+  else{
+    Serial.print("moving to ");
+    Serial.println(desired_position);
+    int distance_in_mm_to_move = desired_position - rounded_current_position;
+    int time_in_ms_to_move = ((int) ((float)abs(distance_in_mm_to_move))/piston_speed*1000);
+    if(distance_in_mm_to_move > 0){
+      digitalWrite(motor_open_pin, HIGH);
+      delay(time_in_ms_to_move);
+      digitalWrite(motor_open_pin, LOW);
+      return;
+    }
+    else{
+      digitalWrite(motor_close_pin, HIGH);
+      delay(time_in_ms_to_move);
+      digitalWrite(motor_close_pin, LOW);
+      return;
+    }
+  }
 }
