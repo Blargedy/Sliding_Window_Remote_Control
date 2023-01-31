@@ -97,21 +97,20 @@ Clearances were designed for ABS/ASA shrinkages, but the parts can be made of ba
 
 20. Unplug the D1 from your computer, plug in the 12v PSU to the unit, and flip the internal power connection switch.
 
-21. Go to `https://www.python.org/downloads/` and click `Download Python 3.5.1`. 
+21. Go to `https://www.python.org/downloads/` and click `Download Python 2.7.18`. 
 
-![image](https://user-images.githubusercontent.com/25805271/215895270-fc627207-14a5-41df-b08d-ab29467ded09.png)
+![image](https://user-images.githubusercontent.com/25805271/215902581-49df9037-c962-4f2e-b0ed-92b99eae74a1.png)
 
-22. Run the python installer
-
-23. Checkmark `Use admin priveleges when installing py.exe` and `Add python.exe to PATH` options, then click `Install Now`
-
-![image](https://user-images.githubusercontent.com/25805271/215895805-d114e87a-9dd6-42ef-b22a-4f79a896796b.png)
+22. Run the python installer and follow the prompts.
 
 24. Restart Arduino IDE.
 
 25. Check your firewall settings to make sure the OTA connection isn't being blocked. I had to set my network to private for OTA to work. 
 
 26. If all went well you should see the OTA connection come up as an upload target option.
+
+![image](https://user-images.githubusercontent.com/25805271/215902453-abd4cffd-6748-4490-8171-82a35d3b94c5.png)
+
 
 27. Once you upload the sketch you will have to restart the IDE to be able to upload again. This bug should be fixed soon<sup>TM</sup>
 
