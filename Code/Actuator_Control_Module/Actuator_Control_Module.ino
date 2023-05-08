@@ -3,6 +3,10 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include <wifi_passwords.h>
+#include <Adafruit_NeoPixel.h>
+#ifdef __AVR__
+ #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
+#endif
 
 const char* ssid = STASSID;
 const char* password = STAPSK;
@@ -14,6 +18,9 @@ const int mom_open_pin = D2;
 const int endstop_pin = D6;
 const int motor_close_pin = D5;
 const int motor_open_pin = D0;
+const int LED_pin = D4;
+
+Adafruit_NeoPixel pixel(1, LED_pin, NEO_GRBW + NEO_KHZ800);
 
 // Variables
 const float piston_speed = 0.01;          //in m/s (coincidentally also mm/ms)
@@ -24,6 +31,10 @@ const int minimum_allowable_position = 0;
 const int maximum_allowable_position = 350;
 
 void setup() {
+  pixel.begin();
+  pixel.clear();
+  pixel.setPixelColor(0, pixel.Color(150,0,0,0));
+  pixel.show();
   //pin modes
   //pinMode(LED_BUILTIN, OUTPUT);
   pinMode(mom_close_pin, INPUT_PULLUP);
